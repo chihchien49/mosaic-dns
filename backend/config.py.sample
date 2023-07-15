@@ -1,0 +1,8 @@
+
+device_timeout = 10
+jwt_secret = ""
+
+db_host     = ""
+db_user     = ""
+db_passwd   = ""
+db_dbName   = ""

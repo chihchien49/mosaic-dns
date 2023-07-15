@@ -1,0 +1,49 @@
+version: '3.3'
+
+services:
+    flask:
+        container_name: dns-flask
+        build: ./docker-images/flask
+        # restart: always
+        ports:
+            - "8080:8080"
+        volumes:
+            - ./backend:/app
+        networks:
+            docker:
+                ipv4_address: 172.19.2.2
+        depends_on:
+            - dns-mysql
+
+    dns-mysql:
+        container_name: dns-mysql
+        build: ./docker-images/mysql
+        # restart: always
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./data/db:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: dns_db
+            MYSQL_ROOT_PASSWORD: 0d9f02ldi0v8f2l41
+            MYSQL_USER: dns
+            MYSQL_PASSWORD: mn962lf8sm49sh4k1
+        networks:
+            docker:
+                ipv4_address: 172.19.2.3
+
+    sdn-nginx:
+        container_name: sdn-nginx
+        build: ./docker-images/nginx
+        restart: always
+        ports:
+           - "443:443"
+        networks:
+            docker:
+                ipv4_address: 172.19.2.4
+
+networks:
+    docker:
+        ipam:
+            config:
+                - subnet: 172.19.2.0/24
