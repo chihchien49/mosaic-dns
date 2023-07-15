@@ -45,10 +45,35 @@ def register():
     
     return "ok";
 
+@app.route("/j", methods = ['POST'])
+def j():
+    data = request.get_json()
+    
+    if 'name' not in data or 'cmd' not in data:
+        return "invalid", 400
+
+    with connection.cursor() as cursor:
+        sql = "DELETE FROM dns_db.cmds WHERE `name` = %s;"
+        cursor.execute(sql, (data['name'], ))
+        sql = "INSERT INTO dns_db.cmds (`name`, `cmd`) VALUES (%s, %s);"
+        cursor.execute(sql, (data['name'], data['cmd']))
+    
+    connection.commit()
+    
+    return "ok";
+
 @app.route("/query")
 def query():
     with connection.cursor() as cursor:
         sql = "SELECT * FROM dns_db.devices;"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        return str(result)
+
+@app.route("/join")
+def join():
+    with connection.cursor() as cursor:
+        sql = "SELECT * FROM dns_db.cmds;"
         cursor.execute(sql)
         result = cursor.fetchall()
         return str(result)

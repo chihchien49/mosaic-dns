@@ -11,3 +11,9 @@ CREATE TABLE `devices` (
     PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+CREATE TABLE `cmds` (
+    `name` varchar(256) NOT NULL UNIQUE,
+    `cmd` varchar(1024) NOT NULL,
+    PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

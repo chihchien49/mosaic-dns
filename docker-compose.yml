@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.1'
 
 services:
     flask:
@@ -17,12 +17,14 @@ services:
 
     dns-mysql:
         container_name: dns-mysql
-        build: ./docker-images/mysql
+        # build: ./docker-images/mysql
+        image: mysql:5.7
         # restart: always
         ports:
             - "3306:3306"
         volumes:
             - ./data/db:/var/lib/mysql
+            - ./docker-images/mysql:/docker-entrypoint-initdb.d
         environment:
             MYSQL_DATABASE: dns_db
             MYSQL_ROOT_PASSWORD: 0d9f02ldi0v8f2l41
